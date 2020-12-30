@@ -6,7 +6,7 @@ import requests
 import tensorflow as tf
 from pypmml import Model
 
-from utils import analysis_list
+from local_utilities import analysis_list
 import saved_model_tool
 import numpy as np
 import operator

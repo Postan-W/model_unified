@@ -8,7 +8,7 @@ from flask import Flask, jsonify, request
 import json
 import traceback
 
-from model import SMModel, ONNXModel, H5Model, PMMLModel
+from models import SMModel, ONNXModel, H5Model, PMMLModel
 
 app = Flask(__name__)
 

@@ -1,5 +1,4 @@
 
-
 def analysis_list(data_dict) -> []:
     key_list = []
     for data in data_dict:

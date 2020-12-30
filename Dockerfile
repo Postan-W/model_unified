@@ -1,6 +1,6 @@
 FROM 1135085247/wmingzhu:v1
 
-
+#上面的基础镜像包含了centos8,python3.6.8环境，设置为阿里源的pip
 SHELL["/bin/bash","-c"]
 
 USER root
