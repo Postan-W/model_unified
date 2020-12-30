@@ -1,7 +1,7 @@
 #!/bin/bash
 string=$HOSTS
 array=${string//,/ }
-for var in ${array[@]} ;do echo ${var//<->/ } >> /etc/hosts ; done
+for var in ${array[@]};do echo ${var} >> /etc/hosts ; done
 
 python /root/model-server/download_model.py
 

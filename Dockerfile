@@ -1,5 +1,4 @@
-FROM centos
-FROM java:8
+FROM 1135085247/wmingzhu:v1
 
 
 SHELL["/bin/bash","-c"]
