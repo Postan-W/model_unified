@@ -121,6 +121,10 @@ def route_metadata():
         traceback.print_exc()
         return jsonify({"error": str(e)})
 
+#这个用来容器的HEALTHCHECK(通过docker ps查看status),没有其他作用,可以删除
+@app.route('/successful')
+def sucessfully():
+    return "sucessfully!"
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8501, debug=False)
