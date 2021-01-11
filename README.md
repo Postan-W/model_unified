@@ -1,9 +1,7 @@
 ## 模型服务
-
-必须将模型挂载或者拷贝在/models目录下
+必须将模型挂载或者拷贝在/models/目录下
 指定模型名称MODEL_NAME必须和onnx文件名称相同,携带后缀
 须知：模型对应的inputs
-
 ### onnx模型
 *tiny-yolov3-11.onnx*
 

@@ -9,22 +9,10 @@ import requests
 
 _author_ = 'luwt'
 _date_ = '2020/1/10 17:06'
-_modified_by = "wmingzhu"
-_modified_date = "2020/12-"
-_statement_ = "修改了日志记录的相关代码，其它未动"
 
-# logging.basicConfig(format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s',level=logging.INFO)
-logger = logging.getLogger(__name__)
-logger.setLevel(level=logging.INFO)
-handler = logging.FileHandler("./logs/downloadmodellog.txt")
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-console = logging.StreamHandler()
-console.setLevel(logging.INFO)
-logger.addHandler(console)
 
+logging.basicConfig(format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s',
+                    level=logging.INFO)
 DL_DIR_PREFIX = "model/model"
 DL_NEED_DIR_PREFIX = ""
 
@@ -37,18 +25,22 @@ def uncompress(zip_path, unzip_path):
         f.extractall(unzip_path, members=zips)
         for src in zips:
             full_src = os.path.join(unzip_path, src)
-            finalname = full_src.replace(DL_DIR_PREFIX, DL_NEED_DIR_PREFIX)
-            print(f"full_src => {full_src}, dst => {finalname}")
-            finalname_parent = os.path.split(finalname)[0]
-            if not os.path.exists(finalname_parent):
-                os.mkdir(finalname_parent)
-                #改名
-            shutil.move(full_src, finalname)
-        #删除上面填入的解压路径，下面的文件也全部删除(当然，上面的移动操作已经将文件移走了)
-        shutil.rmtree(unzip_path)
+            dst = full_src.replace(DL_DIR_PREFIX, DL_NEED_DIR_PREFIX)
+            print(f"full_src => {full_src}, dst => {dst}")
+            dst_parent = os.path.split(dst)[0]
+            if not os.path.exists(dst_parent):
+                os.mkdir(dst_parent)
+            shutil.move(full_src, dst)
+        shutil.rmtree(os.path.join(unzip_path, 'model'))
 
 
 def save_model(local_path, content):
+    """
+    保存模型文件（zip压缩包）
+    :param local_path:
+    :param content:
+    :return:
+    """
     with open(local_path, 'wb')as f:
         f.write(content)
 
@@ -70,7 +62,7 @@ def download_model(local_path, unzip_path):
     res = requests.get(url, params=params)
     if res.status_code == 200:
         logging.info(
-            f"请求成功：url =>> {url}，\n参数为：=> "
+            f"请求下载模型接口成功：url => {url}，\n参数为：=> "
             f"{json.dumps(params, indent=4, ensure_ascii=False)}"
         )
         save_model(local_path, res.content)
@@ -83,5 +75,5 @@ def download_model(local_path, unzip_path):
         raise requests.HTTPError("下载模型失败")
 
 
-download_model('/root/model.zip', '/models/' + os.environ.get('MODEL_NAME') + '/0001/')
+download_model('/root/model.zip', '/models/' + os.environ.get('MODEL_NAME'))
 

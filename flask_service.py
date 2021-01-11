@@ -13,14 +13,14 @@ from models import SMModel, ONNXModel, H5Model, PMMLModel
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
-# 创建日志记录器，指明日志保存的路径、每个日志文件的最大大小、保存的日志文件个数上限
-file_log_handler = RotatingFileHandler("log", maxBytes=1024 * 1024 * 100, backupCount=10, encoding="UTF-8")
+# 创建日志记录器，指明日志保存的路径、每个日志文件的最大大小、备份日志文件个数上限
+handler = RotatingFileHandler("./logs/flask_service_log.txt", maxBytes=1024 * 1024 * 100, backupCount=10, encoding="UTF-8")
 # 创建日志记录的格式 日志等级 输入日志信息的文件名 行数 日志信息
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s", "%Y-%m-%d %H:%M:%S")
 # 为刚创建的日志记录器设置日志记录格式
-file_log_handler.setFormatter(formatter)
+handler.setFormatter(formatter)
 # 为全局的日志工具对象（flask app使用的）添加日志记录器
-logging.getLogger().addHandler(file_log_handler)
+logging.getLogger().addHandler(handler)
 
 # 获取环境变量
 xquery_addr = os.environ.get('XQUERY_ADDR')
@@ -78,13 +78,16 @@ def analy_model():
 model_type, model_path = analy_model()
 
 if model_type == "savedmodel":
+    # 模型转化将在此处进行
     model = SMModel(model_path, model_inputs)
 elif model_type == "onnx":
+    # 模型转化将在此处进行
     model = ONNXModel(model_path, model_inputs)
 elif model_type == "h5":
-    model = H5Model(model_path, model_inputs)
+    # 模型转化将在此处进行
+    model = H5Model(model_path,model_inputs)
 elif model_type == "pmml":
-    model = PMMLModel(model_path, model_inputs)
+    model = PMMLModel(model_path,model_inputs)
 else:
     app.logger.error('不支持当前模型格式:' + model_type)
     sys.exit(1)
@@ -127,4 +130,4 @@ def sucessfully():
     return "sucessfully!"
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8501, debug=False)
+    app.run(host="0.0.0.0", port=5000, debug=False)
